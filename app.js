@@ -24,66 +24,126 @@ client.on('connect', () => {
  */
 client.on('data', function(data) {
   Object.keys(data).forEach(type => {
-    switch (type) {
-
-      case 'mac': // MAC address for the data coming from.
-        return;
-
-      case 'eventlog':
-        console.log('===', 'Get a event from device');
-        break;
-
-      case 'socketstatus':
-        console.log('===', 'Get a gateway info status changed');
-        break;
-
-      case 'info':
-        console.log('===', 'Get a gateway info');
-        break;
-
-      case 'device':
-        console.log('===', 'Get a device list from a gateway');
-        break;
-
-      case 'macro':
-        console.log('===', 'Get a event from triggered macro');
-        break;
-
-      case 'network':
-        console.log('===', 'Get a user defined data from gateway. Rooms/Scenes/Macro/Namings');
-        break;
-
-      case 'timezone':
-        console.log('===', 'Get a timezone from gateway');
-        break;
-
-      case 'authcode':
-        console.log('===', 'Get a auth code from gateway');
-        break;
-
-      case 'usercode':
-        console.log('===', 'Get a usercode from gateway. It is usually door lock password.');
-        break;
-
-      case 'control':
-        console.log('===', 'Get a control result');
-        break;
-
-      case 'twins':
-        console.log('===', 'Get a twins from gateway. Store the name in response in order to restore');
-        break;
-
-      case 'juice':
-        console.log('===', 'Get a juice analysis result');
-        break;
-    }
-
-    // show about data content
-    console.log(type, JSON.stringify(data[type]), '\n');
+    let handler = eventHandlers[type];
+    if (handler) handler(data[type]);
   });
 });
 
-// Send commands
+const eventHandlers = {
+  mac: data => {
+    // MAC address for the data coming from.
+  },
+  eventlog: data => {
+    console.log('===', 'Get a event\n', JSON.stringify(data));
+    //
+    // refer to Philio SDK to get more detail about event log.
+    //
+  },
+  socketstatus: data => {
+    console.log('===', 'Get a gateway info status changed\n', JSON.stringify(data));
+    //
+    // "connected" or "close" or "error"
+    //
+  },
+  info: data => {
+    console.log('===', 'Get a gateway info\n', JSON.stringify(data));
+    // {
+    //   "mac": "18CC230027DC", // MAC address
+    //   "map": "25.014841,121.218676", // Geolocation
+    //   "uuid": "98NSX91PIKFZUYKPFA6T", // P2P uuid
+    //   "address": "::ffff:60.250.242.233:34751" // network address the gateway used
+    // }
+  },
+  device: data => {
+    console.log('===', 'Get a device list from a gateway\n', JSON.stringify(data));
+    //
+    // refer to Philio SDK to get more detail about device list.
+    //
+  },
+  macro: data => {
+    console.log('===', 'Get a event from triggered macro\n', JSON.stringify(data));
+    // {
+    //   "mac": "18:CC:23:00:27:9E", MAC address
+    //   "name": "Pir2LightOff", // the name of macro triggered
+    //   "scene": "", // the scene name in macro
+    //   "timeStamp": 1521784632 // time stamp in seconds
+    // }
+  },
+  network: data => {
+    console.log('===', 'Get a user defined data from gateway. Rooms/Scenes/Macro/Namings\n', JSON.stringify(data));
+    //
+    // refer to Philio SDK to get more detail about device list.
+    //
+  },
+  timezone: data => {
+    console.log('===', 'Get a timezone from gateway\n', JSON.stringify(data));
+    //
+    // "CCT_008" or others shown in Philio SDK
+    //
+  },
+  authcode: data => {
+    console.log('===', 'Get a auth code from gateway\n', JSON.stringify(data));
+    //
+    // "UVOJ53" the six chars in string
+    //
+  },
+  usercode: data => {
+    console.log('===', 'Get a usercode from gateway. It is usually door lock password.\n', JSON.stringify(data));
+    // {
+    //   "list": [{
+    //     "password": "3526", // the password for user ID 1
+    //     "status": 0, // 0x00: Available (not set), 0x01: Occupied, 0x02: Reserved by administrator, 0xFE: Status not available
+    //     "userID": 1
+    //   }],
+    //   "uid": 300
+    // }
+  },
+  control: data => {
+    console.log('===', 'Get a control result\n', JSON.stringify(data));
+    // {
+    //   "cmd": "switch",
+    //   "respcode": 100,
+    //   "respmsg": "OK",
+    //   "uid": 300
+    // }
+    // {
+    //   "cmd": "doscene",
+    //   "value": "Wake up"
+    // }
+  },
+  twins: data => {
+    console.log('===', 'Get a twins from gateway. Store the name in response in order to restore\n', JSON.stringify(data));
+    // {
+    //   "request": { // original command
+    //     "cmd": "backup",
+    //     "mac": "18CC230027DC"
+    //   },
+    //   "name": "20180323T062550540Z", // the name of backup file. it will be needed in restore
+    //   "timestamp": 1521786352480, // time stamp of backup
+    //   "success": true // whether backup is successful
+    // }
+  },
+  juice: data => {
+    console.log('===', 'Get a juice analysis result\n', JSON.stringify(data));
+    // {
+    //   "request": { // original command
+    //     "cmd": "trend_chart",
+    //     "mac": "18CC230027DC",
+    //     "uid": 300,
+    //     "cid": 0
+    //   },
+    //   "timestamp": [1521784453219, 1521784453226], // time stamp for analysis, first is for starting, the other one is for ending.
+    //   "lengthRaw": 2, // the length of result without compression
+    //   "lengthCompressed": 16, // the length of result with compression
+    //   "result": "eJyLjgUAARUAuQ==", // it will be a json string in normal. in the other hand, it will be base64 in compressed.
+    //   "elapsed": 7 // the total time spend in analysis, milliseconds.
+    // }
+  }
+};
+
+/*
+ *   Send commands
+ */
 function trySendCommandAfterConnect() {
   // Perform functions below with interval of 1secs
   // In actual usage, it is not necessary to have the interval.
@@ -96,8 +156,8 @@ function trySendCommandAfterConnect() {
     sendUserCodeListCommand,
     sendUserCodeSetCommand,
     sendUserCodeRemoveCommand,
-    // sendTwinsBackupCommand,
-    // sendTwinsRestoreCommand,
+    sendTwinsBackupCommand,
+    // sendTwinsRestoreCommand, // !!!DANGEROUS!!!  Caution to send the command
     sendJuiceCommand
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
@@ -215,6 +275,7 @@ function sendJuiceCommand() {
     cmd: 'trend_chart', // command for juice
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Device ID
-    cid: 0, // Channel ID
+    cid: 0, // Channel ID,
+    compressed: true, // indicate whether compression applied for result
   });
 }
