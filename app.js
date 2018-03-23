@@ -138,6 +138,17 @@ const eventHandlers = {
     //   "result": "eJyLjgUAARUAuQ==", // it will be a json string in normal. in the other hand, it will be base64 in compressed.
     //   "elapsed": 7 // the total time spend in analysis, milliseconds.
     // }
+  },
+  error: data => {
+    console.log('===', 'Get a error\n', JSON.stringify(data));
+    // {
+    //   "switch": {
+    //     "mac": "18CC230027DC",
+    //     "cid": 0,
+    //     "val": 255
+    //   },
+    //   "msg": "data should have required property 'uid'"
+    // }
   }
 };
 
