@@ -169,7 +169,8 @@ function trySendCommandAfterConnect() {
     sendUserCodeRemoveCommand,
     sendTwinsBackupCommand,
     // sendTwinsRestoreCommand, // !!!DANGEROUS!!!  Caution to send the command
-    sendJuiceCommand
+    sendJuiceCommand,
+    sendAuthCodeCommand
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
 }
@@ -289,4 +290,11 @@ function sendJuiceCommand() {
     cid: 0, // Channel ID,
     compressed: true, // indicate whether compression applied for result
   });
+}
+
+// Send a authcode to bind gateway.
+// Get authcode from gateway. http://<gateway>/network.cgi?authcode
+function sendAuthCodeCommand() {
+  console.log('===', 'Send authcode command');
+  client.emit('authcode', '123456');
 }
