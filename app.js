@@ -170,7 +170,9 @@ function trySendCommandAfterConnect() {
     sendTwinsBackupCommand,
     // sendTwinsRestoreCommand, // !!!DANGEROUS!!!  Caution to send the command
     sendJuiceCommand,
-    sendAuthCodeCommand
+    sendAuthCodeCommand,
+    // sendEmailCommand, // quota limit to 60 a day
+    // sendSMSCommand  // quota limit to 6 a day
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
 }
@@ -297,4 +299,27 @@ function sendJuiceCommand() {
 function sendAuthCodeCommand() {
   console.log('===', 'Send authcode command');
   client.emit('authcode', '123456');
+}
+
+// Send email
+function sendEmailCommand() {
+  console.log('===', 'Send email command');
+  client.emit('postman', {
+    to: [
+      'test@luffanet.com.tw'
+    ],
+    title: 'this is title for a mail',
+    body: 'this is body for a mail ',
+  });
+}
+
+// Send email
+function sendSMSCommand() {
+  console.log('===', 'Send SMS command');
+  client.emit('express', {
+    to: [
+      '+886912345678'
+    ],
+    message: 'this is message for a sms',
+  });
 }
