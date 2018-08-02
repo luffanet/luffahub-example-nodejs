@@ -173,6 +173,7 @@ function trySendCommandAfterConnect() {
     sendAuthCodeCommand,
     // sendEmailCommand, // quota limit to 60 a day
     // sendSMSCommand  // quota limit to 6 a day
+    sendSnapshotCommand,
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
 }
@@ -321,5 +322,15 @@ function sendSMSCommand() {
       '+886912345678'
     ],
     message: 'this is message for a sms',
+  });
+}
+
+// Get snapshot from IPCam. 
+function sendSnapshotCommand() {
+  console.log('===', 'Send snapshot command');
+  client.emit('snapshot', {
+    mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
+    uid: 300, // Camera ID
+    url: 'https://...' // the url to upload image by gateway. use PUT method.
   });
 }
