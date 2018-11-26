@@ -139,6 +139,28 @@ const eventHandlers = {
     //   "elapsed": 7 // the total time spend in analysis, milliseconds.
     // }
   },
+  cast: data => {
+    console.log('===', 'Get a cast snapshot result\n', JSON.stringify(data));
+    // {
+    //   "request": {
+    //     "cmd": "snapshot",
+    //     "mac": "18CC23000E7E",
+    //     "uid": 770,
+    //     "notified": ["cube@luffanet.com.tw"]
+    //   },
+    //   "result": {
+    //     "AcceptRanges": "bytes",
+    //     "LastModified": "2018-11-26T09:06:07.000Z",
+    //     "ContentLength": 37799,
+    //     "ETag": "\"967860ee72aba3c1ed130aff446821c7\"",
+    //     "ContentType": "application/octet-stream"
+    //   },
+    //   "url": "https://luffacast.s3.ap-northeast-1.amazonaws.com/snapshot/18CC23000E7E-770...",  // the image url for snapshot
+    //   "expires": 1543309567713,  // the image url expires time in milliseconds
+    //   "timestamp": 1543223167713,
+    //   "success": true
+    // }
+  },
   error: data => {
     console.log('===', 'Get a error\n', JSON.stringify(data));
     // {
@@ -344,7 +366,7 @@ function sendCastSnapshotCommand() {
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Camera ID
     notify: [
-      'someone@youremail.com'  // optional. Send notification with snapshot image.
+      'someone@youremail.com' // optional. Send notification with snapshot image.
     ]
   });
 }
