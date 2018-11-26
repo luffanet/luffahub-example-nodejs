@@ -340,6 +340,7 @@ function sendSnapshotCommand() {
 function sendCastSnapshotCommand() {
   console.log('===', 'Send cast/snapshot command');
   client.emit('cast', {
+    cmd: 'snapshot',
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Camera ID
     notify: [
