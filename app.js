@@ -167,13 +167,14 @@ function trySendCommandAfterConnect() {
     sendUserCodeListCommand,
     sendUserCodeSetCommand,
     sendUserCodeRemoveCommand,
-    sendTwinsBackupCommand,
+    // sendTwinsBackupCommand,  // Caution to send the command
     // sendTwinsRestoreCommand, // !!!DANGEROUS!!!  Caution to send the command
     sendJuiceCommand,
     sendAuthCodeCommand,
-    // sendEmailCommand, // quota limit to 60 a day
-    // sendSMSCommand  // quota limit to 6 a day
+    // sendEmailCommand, // quota limit to 1 email in 1 minute
+    // sendSMSCommand    // quota limit to 1 SMS in 5 minutes
     sendSnapshotCommand,
+    sendCastSnapshotCommand
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
 }
@@ -325,12 +326,24 @@ function sendSMSCommand() {
   });
 }
 
-// Get snapshot from IPCam. 
+// Get snapshot from IPCam.
 function sendSnapshotCommand() {
   console.log('===', 'Send snapshot command');
   client.emit('snapshot', {
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Camera ID
     url: 'https://...' // the url to upload image by gateway. use PUT method.
+  });
+}
+
+// Get snapshot from IPCam via LuffaCast.
+function sendCastSnapshotCommand() {
+  console.log('===', 'Send cast/snapshot command');
+  client.emit('cast', {
+    mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
+    uid: 300, // Camera ID
+    notify: [
+      'someone@youremail.com'  // optional. Send notification with snapshot image.
+    ]
   });
 }
