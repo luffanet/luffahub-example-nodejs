@@ -310,11 +310,24 @@ function sendTwinsRestoreCommand() {
 function sendJuiceCommand() {
   console.log('===', 'Send juice command');
   client.emit('juice', {
-    cmd: 'trend_chart', // command for juice
+    juice: 'health', // get gateway health info
+    type: 'load_average', // load_average, memory, latency
+    mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
+  });
+  client.emit('juice', { // get device basicValue and sensorValue info
+    juice: 'trend', // trend, histogram, distribution
+    mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
+    uid: 300, // Device ID
+    cid: 0, // Channel ID
+    eventCode: eventCode, // Event code to filter results,
+    days: 1 // data range in days. Max 7, Min 1
+  });
+  client.emit('juice', { // get meter info
+    juice: 'meter', // meter, prediction
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Device ID
     cid: 0, // Channel ID,
-    compressed: true, // indicate whether compression applied for result
+    days: 7 // data range in days. Max 30, Min 1
   });
 }
 
