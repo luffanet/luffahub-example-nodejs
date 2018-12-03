@@ -153,7 +153,8 @@ const eventHandlers = {
     //     "LastModified": "2018-11-26T09:06:07.000Z",
     //     "ContentLength": 37799,
     //     "ETag": "\"967860ee72aba3c1ed130aff446821c7\"",
-    //     "ContentType": "application/octet-stream"
+    //     "ContentType": "application/octet-stream",
+    //     "FaceDetails":[] // face detection result if applied.
     //   },
     //   "url": "https://luffacast.s3.ap-northeast-1.amazonaws.com/snapshot/18CC23000E7E-770...",  // the image url for snapshot
     //   "expires": 1543309567713,  // the image url expires time in milliseconds
@@ -380,6 +381,7 @@ function sendCastSnapshotCommand() {
     uid: 300, // Camera ID
     notify: [
       'someone@youremail.com' // optional. Send notification with snapshot image.
-    ]
+    ],
+    faceDetection: true // optional. Face detection in snapshot.
   });
 }
