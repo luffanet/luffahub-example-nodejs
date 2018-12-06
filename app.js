@@ -162,6 +162,74 @@ const eventHandlers = {
     //   "success": true
     // }
   },
+  face: data => {
+    console.log('===', 'Get a cast face result\n', JSON.stringify(data));
+    // { // result of create face collection
+    //   "request": {
+    //     "collectionId": "mycollection",
+    //     "cmd": "create"
+    //   },
+    //   "result": {
+    //     "StatusCode": 200,
+    //   },
+    //   "timestamp": 1544080087558,
+    //   "success": true
+    // }
+    // { // result of add face to collection
+    //   "request": {
+    //     "collectionId": "mycollection",
+    //     "mac": "18CC230027DC",
+    //     "uid": "769",
+    //     "cmd": "add"
+    //   },
+    //   "result": {
+    //     "FaceRecords": [{
+    //       "Face": {
+    //         "FaceId": "aa113a0d-d8dc-44bb-98ed-41a3cd4de0e8",
+    //       },
+    //       "FaceDetail": {}
+    //     }],
+    //   },
+    //   "timestamp": 1544080088801,
+    //   "success": true
+    // }
+    // { // result of list faces in collection
+    //   "request": {
+    //     "collectionId": "mycollection",
+    //     "cmd": "list"
+    //   },
+    //   "result": {
+    //     "Faces": [{
+    //       "FaceId": "aa113a0d-d8dc-44bb-98ed-41a3cd4de0e8",
+    //     }],
+    //   },
+    //   "timestamp": 1544080089158,
+    //   "success": true
+    // }
+    // { // result of remove face from collection
+    //   "request": {
+    //     "collectionId": "mycollection",
+    //     "faceId": "aa113a0d-d8dc-44bb-98ed-41a3cd4de0e8",
+    //     "cmd": "remove"
+    //   },
+    //   "result": {
+    //     "DeletedFaces": ["aa113a0d-d8dc-44bb-98ed-41a3cd4de0e8"]
+    //   },
+    //   "timestamp": 1544080089542,
+    //   "success": true
+    // }
+    // { // result of reset collection
+    //   "request": {
+    //     "collectionId": "mycollection",
+    //     "cmd": "reset"
+    //   },
+    //   "result": {
+    //     "StatusCode": 200
+    //   },
+    //   "timestamp": 1544080089955,
+    //   "success": true
+    // }
+  },
   error: data => {
     console.log('===', 'Get a error\n', JSON.stringify(data));
     // {
@@ -197,7 +265,12 @@ function trySendCommandAfterConnect() {
     // sendEmailCommand, // quota limit to 1 email in 1 minute
     // sendSMSCommand    // quota limit to 1 SMS in 5 minutes
     sendSnapshotCommand,
-    sendCastSnapshotCommand
+    sendCastSnapshotCommand,
+    sendCastFaceCreateCommand,
+    sendCastFaceAddCommand,
+    sendCastFaceListCommand,
+    sendCastFaceRemoveCommand,
+    sendCastFaceResetCommand
   ]
   .forEach((c, i) => setTimeout(c, 1000 * i));
 }
@@ -383,5 +456,53 @@ function sendCastSnapshotCommand() {
       'someone@youremail.com' // optional. Send notification with snapshot image.
     ],
     faceDetection: true // optional. Face detection in snapshot.
+  });
+}
+
+// Create face collection
+function sendCastFaceCreateCommand() {
+  console.log('===', 'Send create face collection command');
+  client.emit('face', {
+    collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
+    cmd: 'create'
+  });
+}
+
+// Add face to collection. The camera image will be used.
+function sendCastFaceAddCommand() {
+  console.log('===', 'Send add face to collection command');
+  client.emit('face', {
+    collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
+    mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
+    uid: 300, // Camera ID
+    cmd: 'add'
+  });
+}
+
+// List faces in collection
+function sendCastFaceListCommand() {
+  console.log('===', 'Send list faces command');
+  client.emit('face', {
+    collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
+    cmd: 'list'
+  });
+}
+
+// Remove face from collection
+function sendCastFaceRemoveCommand() {
+  console.log('===', 'Send remove face from collection command');
+  client.emit('face', {
+    collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
+    faceId: 'aa113a0d-d8dc-44bb-98ed-41a3cd4de0e8', // Face Id from add/list command.
+    cmd: 'remove'
+  });
+}
+
+// Reset collection. All faces will be removed.
+function sendCastFaceResetCommand() {
+  console.log('===', 'Send reset face collection command');
+  client.emit('face', {
+    collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
+    cmd: 'reset'
   });
 }
