@@ -54,6 +54,22 @@ const eventHandlers = {
     //   "address": "::ffff:60.250.242.233:34751" // network address the gateway used
     // }
   },
+  sysinfo: data => {  // This will be received per 5 minutes
+    console.log('===', 'Get a gateway sysinfo\n', JSON.stringify(data));
+    // {
+    //   "ram": {  // Memory usage of gateway
+    //     "total": 129134592,
+    //     "free": 5603328
+    //   },
+    //   "load": [  // System loading of gateway
+    //     1.79,    // The average of 1 minute
+    //     1.7,     // The average of 5 minutes
+    //     1.71     // The average of 15 minutes
+    //   ],
+    //   "uptime": 384952,   // System up-time in seconds
+    //   "latency": 305      // Sysinfo command latency as network latency
+    // }
+  },
   device: data => {
     console.log('===', 'Get a device list from a gateway\n', JSON.stringify(data));
     //
