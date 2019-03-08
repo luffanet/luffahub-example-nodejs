@@ -337,7 +337,6 @@ function sendThermostatCommand() {
   client.emit('thermostat', {
     mac: '18CC230027DC', // MAC address registered in Hub. You may bind it into Hub first.
     uid: 300, // Device ID
-    cid: 0, // Channel ID
     fan: 1, // Fan state, 0 for OFF, 1 for auto/auto Low, 2 for low, 3 for auto high, 4 for high
     mode: 1, // 0 for OFF, 1 for heating, 2 for cooling, 3 for auto.
     temp: 250, // temperature value
