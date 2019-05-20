@@ -1,0 +1,23 @@
+{
+  "name": "luffahub-example-nodejs",
+  "version": "1.0.0",
+  "description": "Example for middle-user to connect to Hub",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luffanet/luffahub-example-nodejs.git"
+  },
+  "author": "cube@luffanet.com.tw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luffanet/luffahub-example-nodejs/issues"
+  },
+  "homepage": "https://github.com/luffanet/luffahub-example-nodejs#readme",
+  "dependencies": {
+    "mongoose": "^5.5.9",
+    "socket.io-client": "^2.2.0"
+  }
+}
