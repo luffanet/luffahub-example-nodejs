@@ -54,7 +54,7 @@ const eventHandlers = {
     //   "address": "::ffff:60.250.242.233:34751" // network address the gateway used
     // }
   },
-  sysinfo: data => {  // This will be received per 5 minutes
+  sysinfo: data => { // This will be received per 5 minutes
     console.log('===', 'Get a gateway sysinfo\n', JSON.stringify(data));
     // {
     //   "ram": {  // Memory usage of gateway
@@ -521,5 +521,40 @@ function sendCastFaceResetCommand() {
   client.emit('face', {
     collectionId: 'mycollection', // Face collection ID. It used to be end-user ID.
     cmd: 'reset'
+  });
+}
+
+// Create Scene
+function sendSceneSetCommand() {
+  console.log('===', 'Send set scene command');
+  client.emit('jsonsetall', {
+    mac: '18CC230027DC',
+    val: {
+      scenes: [{
+        title: 'Scene name'
+      }]
+    }
+  });
+}
+
+// Remove Scene
+function sendSceneRemoveCommand() {
+  console.log('===', 'Send remove scene command');
+  client.emit('jsondel', {
+    mac: '18CC230027DC',
+    val: {
+      scenes: [{
+        title: 'Scene name'
+      }]
+    }
+  });
+}
+
+// Rename Scene
+function sendSceneRemoveCommand() {
+  console.log('===', 'Send rename scene command');
+  client.emit('jsonrename', {
+    mac: '18CC230027DC',
+    val: ['scenes', 'old name', 'new name']
   });
 }
