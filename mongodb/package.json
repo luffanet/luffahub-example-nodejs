@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/luffanet/luffahub-example-nodejs#readme",
   "dependencies": {
-    "mongoose": "^5.5.9",
+    "mongoose": "^5.7.5",
     "socket.io-client": "^2.2.0"
   }
 }
